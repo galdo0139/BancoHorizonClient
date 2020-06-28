@@ -1,25 +1,71 @@
 <?php
 class Core{
 	private $controller;
-
-	public function __construct($url){
-		$this->controller = ucfirst($url."Controller");
-		
+	private $metodo = 'index';
+	private $parametros;
 
 
-		if (!class_exists($this->controller)) {
-			$this->controller = "ErroController";
-		} 
+	private $url;
+	private $usuario;
+
+
+	public function __construct(){
+		$this->usuario = $_SESSION['userId'] ?? null;
 	}
 
-	public function renderController(){
-		$acao = 'index';
-		ob_start();
-		$returnController  = call_user_func_array(array($this->controller, $acao), array());
-		$render = ob_get_contents();
-		ob_end_clean();
 
-		$dados = ["content" => $render, "title" => $returnController['title'], "css" => $returnController['css'], "js" => $returnController['js']];
-		return $dados;
+	//define qual sera a controller e o metodo a ser chamado 
+	public function start($url){
+		if(isset($url['url'])){
+			//define a controller
+			$this->url = explode('/', $url['url']);
+			$this->controller = ucfirst($this->url[0])."Controller";
+			array_shift($this->url);
+
+			//define o método da controller
+			if(isset($this->url[0]) && $this->url[0] != ''){
+				$this->metodo = $this->url[0];
+				array_shift($this->url);
+
+				//define parametros pra este método
+				if(isset($this->url[0]) && $this->url != ''){
+					$this->parametros = $this->url;
+				}
+			}
+		}else{
+			//exception que chama a home do site
+			$this->controller = "LoginController";
+			$this->metodo = "index";
+			$this->parametros = "";
+			
+		}
+
+		//verifica autenticação e redireciona pra home se falhar
+		if ($this->usuario) {
+			//paginas permitidas
+			$paginas = ['ContaController'];
+			if (!isset($this->controller) || !in_array($this->controller, $paginas)) {
+				$this->controller = "ContaController";
+				$this->metodo = "index";
+			}
+		}else{
+			//pagina de redirect quando acessa sem sessão iniciada
+			$paginas = ['LoginController'];
+			if (!isset($this->controller) || !in_array($this->controller, $paginas)) {
+				$this->controller = "LoginController";
+				$this->metodo = "check";
+			}
+			$this->parametros = "";
+
+		}
+		
+		//chama uma view de erro 404 caso nenhuma controller seja encontrada (tratamento de links incorretos)
+		if (!class_exists($this->controller) || !method_exists($this->controller,$this->metodo)) {
+			$this->controller = "ErroController";
+			$this->metodo = "index";
+			$this->parametros = "";
+		} 
+		//chama a controller
+		call_user_func_array(array($this->controller, $this->metodo), array());
 	}
 }

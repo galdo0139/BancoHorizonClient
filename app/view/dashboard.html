@@ -3,11 +3,11 @@
 
 <div class="saldo">
     <p>Saldo</p> 
-    <p>R$ {{saldo}}</p>
+    <p>{{saldo|format_currency('BRL')}}</p>
 </div>
 <div class="servicos">
     <a href="">Pagamentos</a>
-    <a href="">Transferências</a>
+    <a href="/gigaBankClient/conta/transferencia">Transferências</a>
     <a href="">Depósito por Boleto</a>
     <a href="">Ver Extrato</a>
 </div>
