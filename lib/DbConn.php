@@ -14,7 +14,7 @@ abstract class dbConn{
 	public static function getConn(){
 		
 		try{
-			self::$db = new pdo( 'mysql:host='.self::$server.';dbname='.self::$banco,
+			self::$db = new pdo( 'mysql:host='.self::$server.';dbname='.self::$banco.";charset=utf8", 
 							self::$user,
 							self::$senha,
 							array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
