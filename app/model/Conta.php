@@ -72,7 +72,7 @@ class Conta{
 
 
 
-
+    //getters e setters da classe
     public function getIdConta(){
         return $this->idConta;
     }

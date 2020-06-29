@@ -33,7 +33,7 @@ class Core{
 				}
 			}
 		}else{
-			//exception que chama a home do site
+			//exception que chama a home do site quando nenhuma pagina interna é acessada
 			$this->controller = "LoginController";
 			$this->metodo = "index";
 			$this->parametros = "";
@@ -43,10 +43,10 @@ class Core{
 		//verifica autenticação e redireciona pra home se falhar
 		if ($this->usuario) {
 			//paginas permitidas
-			$paginas = ['ContaController'];
-			if (!isset($this->controller) || !in_array($this->controller, $paginas)) {
+			$paginas = ['ContaController', 'LoginController', 'PagamentoController', 'TransferenciaController'];
+			if (!isset($this->controller) && !in_array($this->controller, $paginas)) {
 				$this->controller = "ContaController";
-				$this->metodo = "index";
+				$this->metodo = "redirect";
 			}
 		}else{
 			//pagina de redirect quando acessa sem sessão iniciada
@@ -55,7 +55,7 @@ class Core{
 				$this->controller = "LoginController";
 				$this->metodo = "check";
 			}
-			$this->parametros = "";
+			$this->parametros = "tentou acessar sem sessao";
 
 		}
 		
@@ -66,6 +66,6 @@ class Core{
 			$this->parametros = "";
 		} 
 		//chama a controller
-		call_user_func_array(array($this->controller, $this->metodo), array());
+		call_user_func_array(array($this->controller, $this->metodo), array($this->parametros));
 	}
 }

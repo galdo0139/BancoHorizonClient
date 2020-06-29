@@ -3,13 +3,14 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
         <title>{{titulo}}</title>
         <link rel="stylesheet" href="/gigaBankClient/public/style.css">
+        <link rel="stylesheet" href={{css}}>
+        
     </head>
     <body>
-        <div class="cartao">
-            <a href="/gigaBankClient/login/logout">Sair</a>
-        </div>
+        {{menu | raw}}
         {{conteudo | raw}}
     </body>
 </html>

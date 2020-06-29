@@ -1,21 +1,27 @@
-<form>
-    <label>Valor</label>
-    <input type="text" name="" id="">
+<div class="wrapper">
+    <h1 class="titulo">Transferência</h1>
+    <p>{{saldo|format_currency('BRL')}}</p>
+    <form>
+        <label for="valor" class="valor">Valor:</label>
+        <input type="text" name="valor" class="valor" id="valor">
 
-    <label>Agencia</label>
-    <input type="text" name="" id="">
+        <label for="tipoConta">Agencia:</label>
+        <input type="text" name="agencia" id="tipoConta">
 
-    <label>Conta</label>
-    <input type="text" name="" id="">
+        <label for="conta">Conta:</label>
+        <input type="text" name="conta" id="conta">
 
-    <label>Banco</label>
-    <select>
-        <option></option>
-    </select>
+        <label for="banco">Banco:</label>
+        <select id="banco" name="banco">
+            <option></option>
+        </select>
 
-    <label>Tipo de Conta</label>
-    <select>
-        <option>Conta Corrente</option>
-        <option>Conta Poupança</option>
-    </select>
-</form>
+        <label for="tipoConta">Tipo de Conta:</label>
+        <select id="tipoConta" name="tipoConta">
+            <option>Conta Corrente</option>
+            <option>Conta Poupança</option>
+        </select>
+
+        <input type="submit" value="Confirmar">
+    </form>
+</div>

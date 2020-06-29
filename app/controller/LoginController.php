@@ -12,7 +12,7 @@ class LoginController{
         echo $template->render();
     }
 
-    public static function check(){
+    public static function check($erro){
         $usuario = new Usuario();
             
         try {
@@ -24,11 +24,11 @@ class LoginController{
                
                 header("Location: /gigaBankClient/conta");
             }else{
-                header("Location: /gigaBankClient");
+                header("Location: /gigaBankClient?erro=$erro");
             }
             
         } catch (\Throwable $th) {
-            header("Location: /gigaBankClient");
+           header("Location: /gigaBankClient?erro=$erro");
         }
         
     }
@@ -36,6 +36,6 @@ class LoginController{
     public static function logout(){
         unset($_SESSION['userId']);
         unset($_SESSION['userName']);
-        header("Location: /gigaBankClient");
+        header("Location: /gigaBankClient/");
     }
 }
