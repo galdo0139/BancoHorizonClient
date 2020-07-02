@@ -72,7 +72,7 @@ class ContaController{
         $nome = substr($_SESSION['userName'], 0,$pos);
 
         $conta = new Conta();
-        //var_dump($conta);
+        
 
         //loader que acessa a pasta das views no app
         $loader = new \Twig\Loader\FilesystemLoader('app/view');
@@ -81,18 +81,31 @@ class ContaController{
             'cache' => '/path/to/compilation_cache',
             'auto_reload' => true,
         ]);
-
+        
+        //adiciona a extensão d eformatação de números ao twig
         $twig->addExtension(new IntlExtension());
         
-        //carrega o conteúdo da view e modfica as variáves
-        $conteudo = $twig->render('transferencia.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
+        //checa se uma transferência foi solicitada
+        if(isset($_POST['valor']) && isset($_POST['agencia']) && isset($_POST['conta']) && isset($_POST['banco']) && isset($_POST['tipoConta'])){
+            //chama o método transferir ao solicitar essa operação
+            $conta->transferir($_POST, $conta);
+
+             //carrega o conteúdo da view e modfica as variáves
+             $conteudo = $twig->render('transferencia.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
+        }else{
+            //carrega o conteúdo da view e modfica as variáves
+            $conteudo = $twig->render('transferencia.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
+           
+        }
+
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
         echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
-                                             'conteudo'=>$conteudo,
-                                             'menu'=>$menu,
-                                             'css'=>'/gigaBankClient/public/dashboard.css']);
+                                         'conteudo'=>$conteudo,
+                                         'menu'=>$menu,
+                                         'css'=>'/gigaBankClient/public/dashboard.css']);
+        
     }
 
    
@@ -104,8 +117,7 @@ class ContaController{
         $nome = substr($_SESSION['userName'], 0,$pos);
 
         $conta = new Conta();
-        //var_dump($conta);
-
+        //$conta->gerarBoleto(); 
         //loader que acessa a pasta das views no app
         $loader = new \Twig\Loader\FilesystemLoader('app/view');
         //gera cache das views

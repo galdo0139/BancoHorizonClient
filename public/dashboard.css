@@ -28,8 +28,9 @@ li{
 }
 
 li:hover{
-    color: #4de38d;
-    background-color: #777;
+    color: #777;
+    background-color: #4de38d;
+    font-weight: bold;
     box-shadow: 0 4px 10px -5px black;
     transform: scale(1.05);
 }
