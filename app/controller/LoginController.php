@@ -1,16 +1,28 @@
 <?php
 class LoginController{
-    public static function index()
-    {
+    public static function index(){
         //uso da classe do twig para renderizar as minhas views
         $loader = new \Twig\Loader\FilesystemLoader('app/view');
         $twig = new \Twig\Environment($loader, [
             'cache' => '/path/to/compilation_cache',
             'auto_reload' => true,
         ]);
-        $template = $twig->load('home.html');
-        echo $template->render();
+
+        
+        //carrega o conteúdo da view e modfica as variáves
+        $conteudo = $twig->render('home.html');
+        
+        //adiciona o conteúdo da página na template
+        echo $twig->render('template.html', ['titulo'=> 'Banco Horizon | Login',
+                                             'conteudo'=>$conteudo,
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
+
+
+
+     
     }
+
+
 
     public static function check($erro){
         $usuario = new Usuario();
