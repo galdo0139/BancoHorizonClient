@@ -1,0 +1,28 @@
+<div class="wrapper">
+    <h1 class="titulo">Transferência</h1>
+    <p>{{saldo|format_currency('BRL')}}</p>
+    <form method="POST">
+        <label for="valor" class="valor">Valor:</label>
+        <input type="text" name="valor" class="valor" id="valor">
+
+        <label for="tipoConta">Agencia:</label>
+        <input type="text" name="agencia" id="tipoConta">
+
+        <label for="conta">Conta:</label>
+        <input type="text" name="conta" id="conta">
+
+        <label for="banco">Banco:</label>
+        <select id="banco" name="banco">
+            <option value="100">GigaBank</option>
+            <option value="77">Inter</option>
+        </select>
+
+        <label for="tipoConta">Tipo de Conta:</label>
+        <select id="tipoConta" name="tipoConta">
+            <option value="1">Conta Corrente</option>
+            <option value="2">Conta Poupança</option>
+        </select>
+
+        <input type="submit" value="Confirmar">
+    </form>
+</div>
