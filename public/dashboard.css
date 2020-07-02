@@ -3,7 +3,11 @@
     width: 20%;
     background-color: #555;
     height: 100vh;
+
+    display: none;
 }
+
+
 
 .logo{
     width: 80%;
@@ -49,11 +53,10 @@ li:active{
 
 
 .wrapper{
-    width: 80%;
+    width: 100%;
     height: 100vh;
     background-color: #eee;
     float: left;
-    box-shadow: inset 15px 0px 15px -15px rgba(0, 0, 0, 0.5);
 
 }
 
@@ -116,4 +119,19 @@ input[type='submit']:active{
     border-bottom: 1px solid #4bd184;
     margin-left: 10%;
     margin-top: 50px;
+}
+
+
+@media only screen and (min-width: 600px){
+    .menu{
+        display: block;
+    }
+
+    .wrapper{
+        width: 80%;
+        box-shadow: inset 15px 0px 10px -15px rgba(0, 0, 0, 0.4);
+    }
+
+    
+
 }
