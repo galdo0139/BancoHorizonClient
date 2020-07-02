@@ -29,12 +29,12 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/gigaBankClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
     }
 
     public static function FunctionName(Type $var = null)
     {
-        header("location: /gigabankclient");
+        header("location: /BancoHorizonclient");
     }
      //
      public static function pagamento(Type $var = null)
@@ -63,7 +63,7 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/gigaBankClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
      }
 
     //carrega a página pra fazer transferências
@@ -104,7 +104,7 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
                                          'conteudo'=>$conteudo,
                                          'menu'=>$menu,
-                                         'css'=>'/gigaBankClient/public/dashboard.css']);
+                                         'css'=>'/BancoHorizonClient/public/dashboard.css']);
         
     }
 
@@ -136,7 +136,7 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/gigaBankClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
     }
 
     //
@@ -166,7 +166,7 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/gigaBankClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
     }
 
     //
@@ -196,7 +196,7 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/gigaBankClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
     }
 
     //

@@ -22,13 +22,13 @@ class LoginController{
                 $usuario->setSenha($_POST['senha']);
                 $r = $usuario->autenticar();
                
-                header("Location: /gigaBankClient/conta");
+                header("Location: /BancoHorizonClient/conta");
             }else{
-                header("Location: /gigaBankClient?erro=$erro");
+                header("Location: /BancoHorizonClient?erro=$erro");
             }
             
         } catch (\Throwable $th) {
-           header("Location: /gigaBankClient?erro=$erro");
+           header("Location: /BancoHorizonClient?erro=$erro");
         }
         
     }
@@ -36,6 +36,6 @@ class LoginController{
     public static function logout(){
         unset($_SESSION['userId']);
         unset($_SESSION['userName']);
-        header("Location: /gigaBankClient/");
+        header("Location: /BancoHorizonClient/");
     }
 }
