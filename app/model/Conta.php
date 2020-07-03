@@ -14,6 +14,15 @@ class Conta{
     private $agConta;
     private $saldo;
 
+    private $valorTransf;
+    private $agTransf;
+    private $numContaTransf;
+    private $tipoContaTransf;
+    private $bancoTransf;
+    
+    
+    
+    
     //carrega os dados da conta do usuário
     public function __construct(){
         
@@ -41,33 +50,31 @@ class Conta{
 
     public function transferir($dados, $conta){
         //filtra os dados recebidos do formulário
-        $valor = str_replace(',','.',$dados['valor']);
-        $valor = filter_var($valor, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
-        $agencia = filter_var($dados['agencia'], FILTER_SANITIZE_NUMBER_INT);
-        $numConta = filter_var($dados['conta'], FILTER_SANITIZE_NUMBER_INT);
-        $tipoConta = filter_var($dados['tipoConta'], FILTER_SANITIZE_NUMBER_INT);
+        $this->valorTransf = str_replace(',','.',$dados['valor']);
+        $this->valorTransf =  abs(filter_var($this->valorTransf, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION));
+        $this->agTransf = filter_var($dados['agencia'], FILTER_SANITIZE_NUMBER_INT);
+        $this->numContaTransf = filter_var($dados['conta'], FILTER_SANITIZE_NUMBER_INT);
+        $this->tipoContaTransf = filter_var($dados['tipoConta'], FILTER_SANITIZE_NUMBER_INT);
 
         //arrumar isso
-        $banco = filter_var($dados['banco'], FILTER_SANITIZE_NUMBER_INT);
+        $this->bancoTransf = filter_var($dados['banco'], FILTER_SANITIZE_NUMBER_INT);
+               
         
-        //DEBUG, TIRAR DEPOIS
-        echo("valor " . $valor . "<br><br>");
-        echo("agencia " . $agencia . "<br><br>");
-        echo("num conta " . $numConta . "<br><br>");
-        echo("banco " . $banco . "<br><br>");
-        echo("tipo conta " . $tipoConta . "<br><br>");
-        
-        
+
+
+
+
+
         $conn = DbConn::getConn();
         
         //adiciona o saldo a uma conta existente
         $query = "UPDATE conta SET saldo = saldo + :novoSaldo WHERE tipo =:tipo && numConta = :numConta && agConta = :agConta";
         $prepare = $conn->prepare($query);
         
-        $prepare->bindValue(":novoSaldo", $valor);
-        $prepare->bindValue(":tipo", $tipoConta);
-        $prepare->bindValue(":numConta", $numConta);
-        $prepare->bindValue(":agConta", $agencia);
+        $prepare->bindValue(":novoSaldo", $this->valorTransf);
+        $prepare->bindValue(":tipo", $this->tipoContaTransf);
+        $prepare->bindValue(":numConta", $this->numContaTransf);
+        $prepare->bindValue(":agConta", $this->agTransf);
         $prepare->execute();
     
         //em caso de sucesso na transferência, retira o saldo da conta que realizou a operação
@@ -75,12 +82,16 @@ class Conta{
             $query = "UPDATE conta SET saldo = saldo - :novoSaldo WHERE tipo =:tipo && numConta = :numConta && agConta = :agConta";
             $prepare = $conn->prepare($query);
             
-            $prepare->bindValue(":novoSaldo", $valor);
+            $prepare->bindValue(":novoSaldo", $this->valorTransf);
             $prepare->bindValue(":tipo", $conta->getTipo());
             $prepare->bindValue(":numConta", $conta->getNumConta());
             $prepare->bindValue(":agConta", $conta->getAgConta());
             $prepare->execute();
+
+           
         }
+        $ret = ($prepare->rowCount() > 0)? true: false; 
+        return $ret;
     }
    
     public function pagamento(Type $var = null)
@@ -141,6 +152,9 @@ class Conta{
     public function getSaldo(){
         return $this->saldo;
     }
+    public function getValorTransf(){
+        return $this->valorTransf;
+    }
 
 
 
@@ -177,5 +191,9 @@ class Conta{
     public function setSaldo($value){
         $this->saldo = $value;
     }
+    public function setValorTransf($value){
+        $this->valorTransf = $value;
+    }
+
 
 }

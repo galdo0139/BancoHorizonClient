@@ -10,12 +10,12 @@ class LoginController{
 
         
         //carrega o conteúdo da view e modfica as variáves
-        $conteudo = $twig->render('home.html');
+        $conteudo = $twig->render('login.html');
         
         //adiciona o conteúdo da página na template
         echo $twig->render('template.html', ['titulo'=> 'Banco Horizon | Login',
                                              'conteudo'=>$conteudo,
-                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/login.css']);
 
 
 

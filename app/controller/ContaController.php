@@ -66,7 +66,7 @@ class ContaController{
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
      }
 
-    //carrega a página pra fazer transferências
+    // ================================== TRANSFERÊNCIAS ====================================================
     public static function transferencia(){
         $pos = strpos($_SESSION['userName']," ");
         $nome = substr($_SESSION['userName'], 0,$pos);
@@ -82,19 +82,24 @@ class ContaController{
             'auto_reload' => true,
         ]);
         
-        //adiciona a extensão d eformatação de números ao twig
+        //adiciona a extensão de formatação de números ao twig
         $twig->addExtension(new IntlExtension());
         
         //checa se uma transferência foi solicitada
         if(isset($_POST['valor']) && isset($_POST['agencia']) && isset($_POST['conta']) && isset($_POST['banco']) && isset($_POST['tipoConta'])){
             //chama o método transferir ao solicitar essa operação
-            $conta->transferir($_POST, $conta);
+            $res = $conta->transferir($_POST, $conta);
 
-             //carrega o conteúdo da view e modfica as variáves
-             $conteudo = $twig->render('transferencia.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
+            if($res){
+                //transferencia bem sucedida
+               $conteudo = $twig->render('transferencia/sucesso.html', ['transf'=> $conta->getValorTransf(), 'saldo'=>$conta->getSaldo()]);
+            }else{
+                //transferência mau sucedida
+                $conteudo = $twig->render('transferencia/erro.html', ['saldo'=>"ERRO"]);
+            }
         }else{
             //carrega o conteúdo da view e modfica as variáves
-            $conteudo = $twig->render('transferencia.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
+            $conteudo = $twig->render('transferencia.html', ['saldo'=>$conta->getSaldo()]);
            
         }
 
@@ -110,7 +115,7 @@ class ContaController{
 
    
 
-    //
+    //=============================================== BOLETOS ================================================
     public static function boleto(Type $var = null)
     {
         $pos = strpos($_SESSION['userName']," ");
@@ -118,6 +123,7 @@ class ContaController{
 
         $conta = new Conta();
         //$conta->gerarBoleto(); 
+        
         //loader que acessa a pasta das views no app
         $loader = new \Twig\Loader\FilesystemLoader('app/view');
         //gera cache das views
@@ -129,7 +135,7 @@ class ContaController{
         $twig->addExtension(new IntlExtension());
         
         //carrega o conteúdo da view e modfica as variáves
-        $conteudo = $twig->render('boleto.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
+        $conteudo = $twig->render('boleto.html', ['saldo'=>$conta->getSaldo()]);
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
@@ -139,7 +145,7 @@ class ContaController{
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
     }
 
-    //
+    //================================================ EXTRATO ============================================
     public static function extrato(Type $var = null)
     {
         $pos = strpos($_SESSION['userName']," ");
@@ -159,7 +165,7 @@ class ContaController{
         $twig->addExtension(new IntlExtension());
         
         //carrega o conteúdo da view e modfica as variáves
-        $conteudo = $twig->render('extrato.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
+        $conteudo = $twig->render('extrato.html', ['saldo'=>$conta->getSaldo()]);
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
@@ -189,7 +195,7 @@ class ContaController{
         $twig->addExtension(new IntlExtension());
         
         //carrega o conteúdo da view e modfica as variáves
-        $conteudo = $twig->render('cartao.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
+        $conteudo = $twig->render('cartao.html', ['saldo'=>$conta->getSaldo()]);
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
