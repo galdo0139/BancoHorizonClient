@@ -16,6 +16,7 @@ require_once 'vendor/autoload.php';
 require_once 'lib/DbConn.php';
 require_once 'app/model/Usuario.php';
 require_once 'app/model/Conta.php';
+require_once 'app/model/Extrato.php';
 
 
 //require de todas as controllers do projeto

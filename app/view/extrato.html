@@ -1,1 +1,8 @@
 extrato
+<table>
+{% for i in queryResult %}
+    <tr>
+        <td> {{i.descricao}} </td>
+    </tr>
+{% endfor %}
+</table>

@@ -155,9 +155,27 @@ class Conta{
     public function getValorTransf(){
         return $this->valorTransf;
     }
+    public function getAgTransf(){
+        return $this->agTransf;
+    }
+    public function getNumContaTransf(){
+        return $this->numContaTransf;
+    }
+    public function getTipoContaTransf(){
+        return $this->tipoContaTransf;
+    }
+    public function getBancoTransf(){
+        return $this->bancoTransf;
+    }
+
+
+    
 
 
 
+    
+    
+    
     public function setIdConta($value){
         $this->idConta = $value;
     }

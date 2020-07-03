@@ -26,7 +26,7 @@ class ContaController{
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
-        echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
+        echo $twig->render('template.html', ['titulo'=> 'Minha Conta - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
@@ -60,7 +60,7 @@ class ContaController{
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
-        echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
+        echo $twig->render('template.html', ['titulo'=> 'Pagamentos - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
@@ -91,10 +91,18 @@ class ContaController{
             $res = $conta->transferir($_POST, $conta);
 
             if($res){
+                //registro no extrato
+                $extrato = new Extrato();
+                $descricao = "Transferência TED para ". $conta->getAgTransf(). " | " .$conta->getNumContaTransf();
+                
+
+                $extrato->transferencia($conta->getValorTransf(), $descricao);
+                var_dump( $extrato);
+
                 //transferencia bem sucedida
                $conteudo = $twig->render('transferencia/sucesso.html', ['transf'=> $conta->getValorTransf(), 'saldo'=>$conta->getSaldo()]);
             }else{
-                //transferência mau sucedida
+                //transferência mal sucedida
                 $conteudo = $twig->render('transferencia/erro.html', ['saldo'=>"ERRO"]);
             }
         }else{
@@ -106,7 +114,7 @@ class ContaController{
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
-        echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
+        echo $twig->render('template.html', ['titulo'=> 'Transferência - Banco Horizon',
                                          'conteudo'=>$conteudo,
                                          'menu'=>$menu,
                                          'css'=>'/BancoHorizonClient/public/dashboard.css']);
@@ -139,7 +147,7 @@ class ContaController{
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
-        echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
+        echo $twig->render('template.html', ['titulo'=> 'Gerar Boleto - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
@@ -152,7 +160,8 @@ class ContaController{
         $nome = substr($_SESSION['userName'], 0,$pos);
 
         $conta = new Conta();
-        //var_dump($conta);
+        $extrato = new Extrato();
+        $dados = $extrato->verExtrato();
 
         //loader que acessa a pasta das views no app
         $loader = new \Twig\Loader\FilesystemLoader('app/view');
@@ -165,11 +174,11 @@ class ContaController{
         $twig->addExtension(new IntlExtension());
         
         //carrega o conteúdo da view e modfica as variáves
-        $conteudo = $twig->render('extrato.html', ['saldo'=>$conta->getSaldo()]);
+        $conteudo = $twig->render('extrato.html', ['saldo'=>$conta->getSaldo(), 'queryResult'=> $dados]);
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
-        echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
+        echo $twig->render('template.html', ['titulo'=> 'Extrato - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
@@ -199,7 +208,7 @@ class ContaController{
         $menu = $twig->render('sideMenu.html');
         
         //adiciona o conteúdo da página na template
-        echo $twig->render('template.html', ['titulo'=> 'Minha Conta',
+        echo $twig->render('template.html', ['titulo'=> 'Meus Cartões - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
