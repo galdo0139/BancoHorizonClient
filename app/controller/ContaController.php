@@ -1,5 +1,4 @@
 <?php
-use Twig\Extra\Intl\IntlExtension;
 
 class ContaController{
 
@@ -7,19 +6,12 @@ class ContaController{
     public static function index(){
         $pos = strpos($_SESSION['userName']," ");
         $nome = substr($_SESSION['userName'], 0,$pos);
+        //carrega um objeto twig configurado
+        $twig = TwigConfig::loader();
+
 
         $conta = new Conta();
-        //var_dump($conta);
-
-        //loader que acessa a pasta das views no app
-        $loader = new \Twig\Loader\FilesystemLoader('app/view');
-        //gera cache das views
-        $twig = new \Twig\Environment($loader, [
-            'cache' => '/path/to/compilation_cache',
-            'auto_reload' => true,
-        ]);
-
-        $twig->addExtension(new IntlExtension());
+        
         
         //carrega o conteúdo da view e modfica as variáves
         $conteudo = $twig->render('dashboard.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
@@ -32,28 +24,25 @@ class ContaController{
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
     }
 
+
+
     public static function FunctionName(Type $var = null)
     {
         header("location: /BancoHorizonclient");
     }
-     //
+
+
+     //===================================== PAGAMENTOS ========================================================
      public static function pagamento(Type $var = null)
      {
         $pos = strpos($_SESSION['userName']," ");
         $nome = substr($_SESSION['userName'], 0,$pos);
+        //carrega um objeto twig configurado
+        $twig = TwigConfig::loader();
 
+        
         $conta = new Conta();
-        //var_dump($conta);
-
-        //loader que acessa a pasta das views no app
-        $loader = new \Twig\Loader\FilesystemLoader('app/view');
-        //gera cache das views
-        $twig = new \Twig\Environment($loader, [
-            'cache' => '/path/to/compilation_cache',
-            'auto_reload' => true,
-        ]);
-
-        $twig->addExtension(new IntlExtension());
+        
         
         //carrega o conteúdo da view e modfica as variáves
         $conteudo = $twig->render('pagamento.html', ['nome'=>$nome, 'saldo'=>$conta->getSaldo()]);
@@ -70,20 +59,13 @@ class ContaController{
     public static function transferencia(){
         $pos = strpos($_SESSION['userName']," ");
         $nome = substr($_SESSION['userName'], 0,$pos);
+        //carrega um objeto twig configurado
+        $twig = TwigConfig::loader();
+
 
         $conta = new Conta();
         
-
-        //loader que acessa a pasta das views no app
-        $loader = new \Twig\Loader\FilesystemLoader('app/view');
-        //gera cache das views
-        $twig = new \Twig\Environment($loader, [
-            'cache' => '/path/to/compilation_cache',
-            'auto_reload' => true,
-        ]);
         
-        //adiciona a extensão de formatação de números ao twig
-        $twig->addExtension(new IntlExtension());
         
         //checa se uma transferência foi solicitada
         if(isset($_POST['valor']) && isset($_POST['agencia']) && isset($_POST['conta']) && isset($_POST['banco']) && isset($_POST['tipoConta'])){
@@ -93,21 +75,20 @@ class ContaController{
             if($res){
                 //registro no extrato
                 $extrato = new Extrato();
+
                 $descricao = "Transferência TED para ". $conta->getAgTransf(). " | " .$conta->getNumContaTransf();
-                
-
                 $extrato->transferencia($conta->getValorTransf(), $descricao);
-                var_dump( $extrato);
-
-                //transferencia bem sucedida
-               $conteudo = $twig->render('transferencia/sucesso.html', ['transf'=> $conta->getValorTransf(), 'saldo'=>$conta->getSaldo()]);
+                
+                //renderiza a view de sucesso na transferencia
+                $conteudo = $twig->render('transferencia/sucesso.html', ['transf'=> $conta->getValorTransf(), 'saldo'=>$conta->getSaldo()]);
+                unset($POST);
             }else{
                 //transferência mal sucedida
                 $conteudo = $twig->render('transferencia/erro.html', ['saldo'=>"ERRO"]);
             }
         }else{
             //carrega o conteúdo da view e modfica as variáves
-            $conteudo = $twig->render('transferencia.html', ['saldo'=>$conta->getSaldo()]);
+            $conteudo = $twig->render('transferencia/transferencia.html', ['saldo'=>$conta->getSaldo()]);
            
         }
 
@@ -128,19 +109,13 @@ class ContaController{
     {
         $pos = strpos($_SESSION['userName']," ");
         $nome = substr($_SESSION['userName'], 0,$pos);
+        //carrega um objeto twig configurado
+        $twig = TwigConfig::loader();
+
 
         $conta = new Conta();
         //$conta->gerarBoleto(); 
         
-        //loader que acessa a pasta das views no app
-        $loader = new \Twig\Loader\FilesystemLoader('app/view');
-        //gera cache das views
-        $twig = new \Twig\Environment($loader, [
-            'cache' => '/path/to/compilation_cache',
-            'auto_reload' => true,
-        ]);
-
-        $twig->addExtension(new IntlExtension());
         
         //carrega o conteúdo da view e modfica as variáves
         $conteudo = $twig->render('boleto.html', ['saldo'=>$conta->getSaldo()]);
@@ -158,21 +133,14 @@ class ContaController{
     {
         $pos = strpos($_SESSION['userName']," ");
         $nome = substr($_SESSION['userName'], 0,$pos);
+        //carrega um objeto twig configurado
+        $twig = TwigConfig::loader();
+
 
         $conta = new Conta();
         $extrato = new Extrato();
         $dados = $extrato->verExtrato();
 
-        //loader que acessa a pasta das views no app
-        $loader = new \Twig\Loader\FilesystemLoader('app/view');
-        //gera cache das views
-        $twig = new \Twig\Environment($loader, [
-            'cache' => '/path/to/compilation_cache',
-            'auto_reload' => true,
-        ]);
-
-        $twig->addExtension(new IntlExtension());
-        
         //carrega o conteúdo da view e modfica as variáves
         $conteudo = $twig->render('extrato.html', ['saldo'=>$conta->getSaldo(), 'queryResult'=> $dados]);
         $menu = $twig->render('sideMenu.html');
@@ -184,24 +152,18 @@ class ContaController{
                                              'css'=>'/BancoHorizonClient/public/dashboard.css']);
     }
 
-    //
+    //============================================= CARTÕES ==================================================
     public static function cartao(Type $var = null)
     {
         $pos = strpos($_SESSION['userName']," ");
         $nome = substr($_SESSION['userName'], 0,$pos);
+        //carrega um objeto twig configurado
+        $twig = TwigConfig::loader();
+
 
         $conta = new Conta();
-        //var_dump($conta);
 
-        //loader que acessa a pasta das views no app
-        $loader = new \Twig\Loader\FilesystemLoader('app/view');
-        //gera cache das views
-        $twig = new \Twig\Environment($loader, [
-            'cache' => '/path/to/compilation_cache',
-            'auto_reload' => true,
-        ]);
-
-        $twig->addExtension(new IntlExtension());
+        
         
         //carrega o conteúdo da view e modfica as variáves
         $conteudo = $twig->render('cartao.html', ['saldo'=>$conta->getSaldo()]);

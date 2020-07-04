@@ -51,6 +51,5 @@ class Extrato{
         $prepare->bindValue(":categoria", $this->categoria);
         $prepare->bindValue(":dataOperacao", $this->dataOperacao);
         $r = $prepare->execute();
-        var_dump($r);
     }
 }
