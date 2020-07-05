@@ -48,6 +48,7 @@ class Conta{
         $this->saldo = $resultado['saldo'];
     }
 
+    // ================================================= TRANSFERIR =================================================
     public function transferir($dados, $conta){
         //filtra os dados recebidos do formulário
         $this->valorTransf = str_replace(',','.',$dados['valor']);

@@ -1,8 +1,10 @@
-extrato
-<table>
-{% for i in queryResult %}
-    <tr>
-        <td> {{i.descricao}} </td>
-    </tr>
-{% endfor %}
-</table>
+<div class="wrapper">
+    <div class="content">
+    {% for i in queryResult %}
+        <div class="extratoItem">
+            <h1>{{i.categoria}}</h1>
+            <p> • {{i.descricao}} </p>
+        </div>
+    {% endfor %}
+    </div>
+</div>

@@ -21,7 +21,8 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Minha Conta - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css',
+                                             'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
     }
 
 
@@ -52,7 +53,8 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Pagamentos - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css',
+                                             'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
      }
 
     // ================================== TRANSFERÊNCIAS ====================================================
@@ -98,7 +100,8 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Transferência - Banco Horizon',
                                          'conteudo'=>$conteudo,
                                          'menu'=>$menu,
-                                         'css'=>'/BancoHorizonClient/public/dashboard.css']);
+                                         'css'=>'/BancoHorizonClient/public/dashboard.css',
+                                         'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
         
     }
 
@@ -125,7 +128,8 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Gerar Boleto - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css',
+                                             'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
     }
 
     //================================================ EXTRATO ============================================
@@ -149,7 +153,8 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Extrato - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css',
+                                             'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
     }
 
     //============================================= CARTÕES ==================================================
@@ -173,7 +178,8 @@ class ContaController{
         echo $twig->render('template.html', ['titulo'=> 'Meus Cartões - Banco Horizon',
                                              'conteudo'=>$conteudo,
                                              'menu'=>$menu,
-                                             'css'=>'/BancoHorizonClient/public/dashboard.css']);
+                                             'css'=>'/BancoHorizonClient/public/dashboard.css',
+                                             'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
     }
 
     //

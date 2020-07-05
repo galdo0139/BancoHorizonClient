@@ -8,9 +8,20 @@ body{
     background-color: #555;
     height: 100vh;
 
-    display: none;
+    margin-left: -100%;
+    transition: 0.5s;
 }
 
+.menuBtn{
+    height: 100vh;
+    width: 10%;
+    background-color: #555;
+    border: 0;
+    color: #fff;
+    font-size: 3em;
+    outline: transparent;
+    position: absolute;
+}
 
 
 .logo{
@@ -25,6 +36,7 @@ a{
 a:visited{
     color: #4de38d;
 }
+
 
 li{
     height: 40px;
@@ -46,7 +58,12 @@ li:hover, .selecionado{
 }
 
 li:active{
-    color: #007c36;
+    
+    text-shadow: 0px 0px 2px black;
+
+    font-weight: bold;
+    box-shadow: 0 4px 10px -5px black;
+    color: #4de38d;
     background-color: #aaa;
     transform: scale(1.05);
 }
@@ -62,6 +79,7 @@ li:active{
     height: 100vh;
     background-color: #eee;
     float: left;
+    padding-left: 10%;
 
 }
 
@@ -92,6 +110,18 @@ input, select{
 
 label.valor {
     color: #4bd184;
+    display: block;
+}
+
+input.valor {
+    display: inline-block;
+    width:90%;
+}
+
+.cifrao{
+    display: inline-block;
+    width:10%;
+    font-size: 1.5em;
 }
 
 
@@ -128,16 +158,42 @@ input[type='submit']:active{
 }
 
 
-@media only screen and (min-width: 600px){
+
+.content{
+    padding: 5% 10%;
+}
+.content h1{
+    padding-left: 1%;
+    font-size: 1.2em;
+}
+
+.extratoItem{
+    height: 7em;
+    padding: 2em 2%;
+    border-bottom: 1px solid #4bd184;
+}
+
+
+@media only screen and (min-width: 750px){
     .menu{
-        display: block;
+        margin-left: 0%; 
+    }
+
+    .menuBtn{
+        display: none;
     }
 
     .wrapper{
+        padding-left: 0%;
         width: 80%;
         box-shadow: inset 15px 0px 10px -15px rgba(0, 0, 0, 0.4);
     }
 
+    input.valor {
+        width:95%;
+    }
     
-
+    .cifrao{
+        width:5%;
+    }
 }
