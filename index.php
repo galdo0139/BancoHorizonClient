@@ -17,7 +17,9 @@ require_once 'lib/DbConn.php';
 require_once 'lib/TwigConfig.php';
 require_once 'app/model/Usuario.php';
 require_once 'app/model/Conta.php';
+require_once 'app/model/Transferencia.php';
 require_once 'app/model/Extrato.php';
+require_once 'app/model/Boleto.php';
 
 
 //require de todas as controllers do projeto
