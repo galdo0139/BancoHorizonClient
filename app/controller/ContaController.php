@@ -43,26 +43,39 @@ class ContaController{
     public static function pagamento(){  
         $conta = new Conta();
         $boleto = new Boleto();
-
+        //carrega um objeto twig configurado
+        $twig = TwigConfig::loader();
         if(isset($_GET['numBoleto'])){
             $boleto = $boleto->procuraBoleto($_GET['numBoleto']);
             echo json_encode($boleto);
         }else{
+            if (isset($_POST['codigo']) && isset($_POST['dataPagamento']) && isset($_POST['valorTotal'])) {
+                
 
 
-            //carrega um objeto twig configurado
-            $twig = TwigConfig::loader();
-            //carrega o conteúdo da view e modfica as variáves
-            $conteudo = $twig->render('pagamento/pagamento.html', ['saldo'=>$conta->getSaldo()]);
-            
-            
-            //adiciona o conteúdo da página e o menu no template
-            $menu = $twig->render('sideMenu.html');
-            echo $twig->render('template.html', ['titulo'=> 'Pagamentos - Banco Horizon',
-                                                'conteudo'=>$conteudo,
-                                                'menu'=>$menu,
-                                                'css'=>'/BancoHorizonClient/public/dashboard.css',
-                                                'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
+                if (condition) {
+                   //carrega o conteúdo da view e modfica as variáves
+                    $conteudo = $twig->render('pagamento/sucesso.html', ['saldo'=>$conta->getSaldo(),
+                    "dataAtual"=> date("Y-m-d")]);
+                } else {
+                    //carrega o conteúdo da view e modfica as variáves
+                    $conteudo = $twig->render('pagamento/erro.html', ['saldo'=>$conta->getSaldo(),
+                    "dataAtual"=> date("Y-m-d")]);
+                }
+            } else {
+                //carrega o conteúdo da view e modfica as variáves
+                $conteudo = $twig->render('pagamento/pagamento.html', ['saldo'=>$conta->getSaldo(),
+                                                                        "dataAtual"=> date("Y-m-d")]);
+                
+                
+                //adiciona o conteúdo da página e o menu no template
+                $menu = $twig->render('sideMenu.html');
+                echo $twig->render('template.html', ['titulo'=> 'Pagamentos - Banco Horizon',
+                                                    'conteudo'=>$conteudo,
+                                                    'menu'=>$menu,
+                                                    'css'=>'/BancoHorizonClient/public/dashboard.css',
+                                                    'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
+            }
         }
         
     }

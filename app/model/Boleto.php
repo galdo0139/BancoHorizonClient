@@ -88,7 +88,7 @@ class Boleto {
                 }
             }
         } else {
-            $resposta = $res;
+            $resposta = false;
         }
         
         
