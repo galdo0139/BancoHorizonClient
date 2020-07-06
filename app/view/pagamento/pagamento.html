@@ -1,0 +1,20 @@
+<div class="wrapper">
+    <h1 class="titulo">Pagamentos</h1>
+    <p>{{saldo|format_currency('BRL')}}</p>
+    <form>
+        <label>Código de Barras</label>
+        <input type="tel" name="codigo" id="codigo">
+        <button class="confirma">Próximo</button>
+
+        <div class="campos">
+            <label for="valorBoleto" class="valor">Valor:</label>
+            <label class="cifrao leitura">R$</label><input type="text" name="valor" class="valor leitura" id="valor" readonly>
+            <label>Pagar em:</label>
+            <input type="date" name="codigo" >
+            <label>Data de Vencimento:</label>
+            <input type="date" name="codigo" readonly class="leitura" id="vencimento">
+        </div>
+        <!-- <input type="submit" value="Próximo"> -->
+    </form>
+</div>
+<script src="/bancoHorizonClient/public/js/pagamento.js"></script>

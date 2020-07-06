@@ -90,7 +90,7 @@ form{
     padding: 5%;
 }
 
-input, select{
+input, select, .confirma{
     border:0;
     border-bottom: 1px solid #555;
     outline: 0;
@@ -130,7 +130,7 @@ input:focus{
     border-bottom: 1px solid #4de38d;
 }
 
-input[type='submit']{
+input[type='submit'], .confirma{
     border:0;
     color: #fff;
     border-radius: 5px;
@@ -140,11 +140,11 @@ input[type='submit']{
 }
 
 
-input[type='submit']:hover{
+input[type='submit']:hover, .confirma:hover{
     background-color: #37b46d;
 }
 
-input[type='submit']:active{
+input[type='submit']:active, .confirma:active{
     background-color: #289457;
 }
 
@@ -196,4 +196,16 @@ input[type='submit']:active{
     .cifrao{
         width:5%;
     }
+}
+
+
+
+
+
+.campos{
+    display: none;
+}
+
+.leitura{
+    color: #bbb;
 }

@@ -22,7 +22,12 @@ class Boleto {
             while (strlen($random) < 6){
                 $random = "0" . $random;
             }
-            $this->numBoleto = "00139." .  $random . "." . str_replace("-","",$this->dataAtual).".".str_replace("-","",$hora); 
+
+            $random2 = rand(1, 99999);
+            while (strlen($random2) < 5){
+                $random2 = "0" . $random2;
+            }
+            $this->numBoleto = "00139." .  $random . "." . str_replace("-","",$this->dataAtual).".".str_replace("-","",$hora) . ".$random2-8"; 
             
         
             if ($dataVencimento) {
@@ -59,7 +64,37 @@ class Boleto {
         return $this->resultado;
     }
 
-    
+    public function procuraBoleto($numBoleto){
+        $this->numBoleto = $numBoleto;
+
+        $conn = DbConn::getConn();
+            
+        $query = "SELECT * FROM boleto WHERE 
+        idConta = :idConta && codigoBoleto = :codigoBoleto";
+
+        
+        $prepare = $conn->prepare($query);
+
+        $prepare->bindValue(":idConta", $_SESSION['userId']);
+        $prepare->bindValue(":codigoBoleto", $this->numBoleto);
+        $res = $prepare->execute();
+        if ($res) {
+            while($row = $prepare->fetch()) {
+                $resposta = $row;
+            }
+            foreach ($resposta as $key => $value) {
+                if (is_numeric($key)) {
+                    unset($resposta[$key]);
+                }
+            }
+        } else {
+            $resposta = $res;
+        }
+        
+        
+        return $resposta;
+
+    }
 
 
 
