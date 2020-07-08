@@ -7,6 +7,7 @@ let valor = document.querySelector("#valor");
 let juros = document.querySelector("#juros");
 let desconto = document.querySelector("#desconto");
 let total = document.querySelector("#valorTotal");
+let pagarEm = document.querySelector("#dataPagamento");
 
 
 
@@ -20,15 +21,18 @@ btnConfirma.onclick = function (event) {
 
     ajax.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            //var resultado = JSON.parse(this.responseText);
-            alert(this.responseText);
-            //vencimento.value = resultado.dataVencimento;
+            var resultado = JSON.parse(this.responseText);
+            
+            vencimento.value = resultado.dataVencimento;
+            alert(resultado.dataVencimento)
 
-            //valor.value = "R$ " + resultado.valor;
-            //juros.value = "R$ " + "0,00";
-            //desconto.value = "R$ " + "0,00";
-            //total.value = resultado.valor;
-            //btnConfirma.style.display = "none";
+            valor.value = resultado.valor;
+            juros.value = resultado.multaAtraso;
+            desconto.value = resultado.valorDesconto;
+            total.value = resultado.total;
+            btnConfirma.style.display = "none";
+
+            //pagarEm.focus();
         }
     }
     ajax.open("GET", `?numBoleto=${numBoleto}`, true);

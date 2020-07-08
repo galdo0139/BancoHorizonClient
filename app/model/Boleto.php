@@ -1,12 +1,38 @@
 <?php
 
-class Boleto {
-    private $valor;
+class Boleto{
     private $dataAtual;
-    private $vencimento;
     private $numBoleto;
+    private $idBoleto;
+    private $idConta;
+    private $dataEmissao;
+    private $vencimento;
+    private $dataVencimento;
+    private $diasAtraso;
+    private $multaAtraso;
+    private $cobrarJuros;
+    private $dataDesconto;
+    private $valorDesconto;
+    private $valorDescontoMoeda;
+    
+    
+    private $valor;
+    private $valorMoeda;
+    private $total;
+    private $totalMoeda;
+    private $valorPagamento;
+    private $statusPagamento;
     private $resultado;
 
+    
+    
+    
+    
+    
+   
+    
+
+    // =========================================== Cadastra um novo boleto ============================================
     public function gerarBoleto($valor, $vencimento){   
         $this->dataAtual = date("Y-m-d");
         if (strlen($valor)>0 && strlen($vencimento)>0) {
@@ -64,7 +90,9 @@ class Boleto {
         return $this->resultado;
     }
 
+    // ====================================== Procura e exibe os dados de um boleto cadastrado ======================
     public function procuraBoleto($numBoleto){
+        //SANITIZAR ISSO AQUI
         $this->numBoleto = $numBoleto;
 
         $conn = DbConn::getConn();
@@ -75,7 +103,7 @@ class Boleto {
         
         $prepare = $conn->prepare($query);
 
-        $prepare->bindValue(":idConta", $_SESSION['userId']);
+        $rows = $prepare->bindValue(":idConta", $_SESSION['userId']);
         $prepare->bindValue(":codigoBoleto", $this->numBoleto);
         $res = $prepare->execute();
         if ($res) {
@@ -87,16 +115,85 @@ class Boleto {
                     unset($resposta[$key]);
                 }
             }
+
+
+            $this->idBoleto = $resposta['idBoleto'];
+            $this->idConta = $resposta['idConta'];
+            $this->dataEmissao = $resposta['dataEmissao'];
+            $this->vencimento = new DateTime($resposta['dataVencimento']);
+            $this->dataVencimento = $resposta['dataVencimento'];
+            $this->dataDesconto = new DateTime($resposta['dataDesconto']);
+            $this->dataAtual = new DateTime();
+
+            $this->cobrarJuros = $resposta['cobrarJuros'];
+            $this->valor = $resposta['valor'];
+            $this->valorDesconto = $resposta['valorDesconto'];
+            $resposta['diasAtraso'] = (string) 0;
+
+            $calcAtraso = (date_diff($this->vencimento, $this->dataAtual));
+
+            
+            
+            
+            
+            //MULTA POR ATRASO
+            if ($this->cobrarJuros && ($this->vencimento < $this->dataAtual)) {
+               
+                 //calcula os dias atrasados
+                $resposta['diasAtraso'] = (string) $calcAtraso->d;
+                //calcula a multa por atraso (juros simples de 0.8% ao dia)
+                $multa = $resposta['valor'] * $resposta['diasAtraso'] * 0.008;
+           
+                $this->valorMoeda = Money::real($this->valor);
+                $this->multaAtraso = Money::real($multa);
+                $this->valorDescontoMoeda = Money::real(0);
+                $this->total = Money::realSemSifrao($this->valor + $multa);
+                $this->totalMoeda = Money::realSemSifrao($this->valor + $multa);
+            
+            
+            //DESCONTO
+            }else if ($resposta['valorDesconto'] > 0 && $this->dataDesconto > $this->dataAtual) {
+                //calcula o desconto
+                $this->valorMoeda = Money::real($this->valor);
+                $this->multaAtraso = Money::real(0);
+                $this->valorDescontoMoeda = Money::real($this->valorDesconto);
+                $this->total = Money::realSemSifrao($this->valor);
+                $this->totalMoeda = Money::realSemSifrao($this->valor);
+
+            //DEFAULT
+            }else{
+                $this->valorMoeda = Money::real($this->valor);
+                $this->multaAtraso = Money::real(0);
+                $this->valorDescontoMoeda = Money::real(0);
+                $this->total = Money::realSemSifrao($this->valor);
+                $this->totalMoeda = Money::realSemSifrao($this->valor);
+            }
         } else {
             $resposta = false;
         }
         
         
-        return $resposta;
+        return $this;
 
     }
 
+    public function toJson(Type $var = null){
+        $objectArray = [];
+        foreach($this as $key => $value) {
+            $objectArray[$key] = $value;
+        }
+    
+        return json_encode($objectArray);
+    }
 
+    public function jsonSerialize() {
+        return $this;
+    }
+
+
+    public function pagarBoleto($var = null){
+        # code...
+    }
 
 
 

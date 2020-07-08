@@ -46,27 +46,32 @@ class ContaController{
         //carrega um objeto twig configurado
         $twig = TwigConfig::loader();
         if(isset($_GET['numBoleto'])){
-            $boleto = $boleto->procuraBoleto($_GET['numBoleto']);
-            echo json_encode($boleto);
+            $dadosBoleto = $boleto->procuraBoleto($_GET['numBoleto']);
+            
+            echo($boleto->toJson());
+            
         }else{
             if (isset($_POST['codigo']) && isset($_POST['dataPagamento']) && isset($_POST['valorTotal'])) {
+                $dadosBoleto = $boleto->procuraBoleto($_POST['codigo']);
+                var_dump($boleto);
+                var_dump($dadosBoleto);
                 
 
 
-                if (condition) {
+                $conteudo = $twig->render('pagamento/sucesso.html', ['saldo'=>$conta->getSaldo(),
+                    "dataAtual"=> date("Y-m-d")]);
+
+                if (isset($_POST)) {
                    //carrega o conteúdo da view e modfica as variáves
-                    $conteudo = $twig->render('pagamento/sucesso.html', ['saldo'=>$conta->getSaldo(),
-                    "dataAtual"=> date("Y-m-d")]);
+                    
                 } else {
-                    //carrega o conteúdo da view e modfica as variáves
-                    $conteudo = $twig->render('pagamento/erro.html', ['saldo'=>$conta->getSaldo(),
-                    "dataAtual"=> date("Y-m-d")]);
+                    header("location: erro");
                 }
             } else {
                 //carrega o conteúdo da view e modfica as variáves
                 $conteudo = $twig->render('pagamento/pagamento.html', ['saldo'=>$conta->getSaldo(),
                                                                         "dataAtual"=> date("Y-m-d")]);
-                
+            }   
                 
                 //adiciona o conteúdo da página e o menu no template
                 $menu = $twig->render('sideMenu.html');
@@ -75,7 +80,7 @@ class ContaController{
                                                     'menu'=>$menu,
                                                     'css'=>'/BancoHorizonClient/public/dashboard.css',
                                                     'script'=>'/BancoHorizonClient/public/js/sideMenu.js']);
-            }
+            
         }
         
     }
