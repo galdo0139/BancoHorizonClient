@@ -10,7 +10,7 @@ class ContaController{
         $twig = TwigConfig::loader();
 
 
-        $conta = new Conta();
+        $conta = new Conta($_SESSION['userId']);
         
         
         //carrega o conteúdo da view e modfica as variáves
@@ -41,20 +41,26 @@ class ContaController{
 
     //===================================== PAGAMENTOS ========================================================
     public static function pagamento(){  
-        $conta = new Conta();
+        $conta = new Conta($_SESSION['userId']);
         $boleto = new Boleto();
         //carrega um objeto twig configurado
         $twig = TwigConfig::loader();
+
+        //responde ao ajax que pesquisa pelo boleto
         if(isset($_GET['numBoleto'])){
             $dadosBoleto = $boleto->procuraBoleto($_GET['numBoleto']);
-            
+            $boleto->calcularBoleto();
             echo($boleto->toJson());
+
             
         }else{
+            //pagamento do boleto
             if (isset($_POST['codigo']) && isset($_POST['dataPagamento']) && isset($_POST['valorTotal'])) {
-                $dadosBoleto = $boleto->procuraBoleto($_POST['codigo']);
+                $boleto->procuraBoleto($_POST['codigo']);
+                $boleto->calcularBoleto();
                 var_dump($boleto);
-                var_dump($dadosBoleto);
+                $boleto->pagarBoleto($conta);
+                
                 
 
 
@@ -68,7 +74,7 @@ class ContaController{
                     header("location: erro");
                 }
             } else {
-                //carrega o conteúdo da view e modfica as variáves
+                //falaha no pagamento do boleto
                 $conteudo = $twig->render('pagamento/pagamento.html', ['saldo'=>$conta->getSaldo(),
                                                                         "dataAtual"=> date("Y-m-d")]);
             }   
@@ -90,7 +96,7 @@ class ContaController{
         //carrega um objeto twig configurado
         $twig = TwigConfig::loader();
 
-        $conta = new Conta();
+        $conta = new Conta($_SESSION['userId']);
         $transf = new Transferencia();
         
         
@@ -104,8 +110,7 @@ class ContaController{
                 //registro no extrato
                 $extrato = new Extrato();
 
-                $descricao = "Transferência TED para ". $transf->getAgTransf(). " | " .$transf->getNumContaTransf();
-                $extrato->transferencia($transf->getValorTransf(), $descricao);
+                $extrato->transferencia($transf);
                 
                 //renderiza a view de sucesso na transferencia
                 $conteudo = $twig->render('transferencia/sucesso.html', ['transf'=> $transf->getValorTransf(), 'saldo'=>$conta->getSaldo()]);
@@ -176,7 +181,7 @@ class ContaController{
         $twig = TwigConfig::loader();
 
 
-        $conta = new Conta();
+        $conta = new Conta($_SESSION['userId']);
         $extrato = new Extrato();
         $dados = $extrato->verExtrato();
 
@@ -202,7 +207,7 @@ class ContaController{
         $twig = TwigConfig::loader();
 
 
-        $conta = new Conta();
+        $conta = new Conta($_SESSION['userId']);
 
         
         

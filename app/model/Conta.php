@@ -19,15 +19,28 @@ class Conta{
     
     
     //carrega os dados da conta do usuário
-    public function __construct(){
-        
+    public function __construct($conta, $numConta = 0, $agConta = 0){
         $conn = DbConn::getConn();
         $query = "SELECT * FROM conta where idConta =:conta";
         $prepare = $conn->prepare($query);
-        $prepare->bindValue(":conta", $_SESSION['userId']);
+        $prepare->bindValue(":conta", $conta);
         $prepare->execute();
-        if ($prepare->rowCount()) {
+        if ($prepare->rowCount()>0) {
             $resultado = $prepare->fetch();
+        }else {
+            $conn = DbConn::getConn();
+            $query = "SELECT * FROM conta where numConta = :numConta AND agConta = :agConta";
+            $prepare = $conn->prepare($query);
+            $prepare->bindValue(":numConta", $numConta);
+            $prepare->bindValue(":agConta", $agConta);
+            
+            var_dump($numConta);
+            var_dump($agConta);
+            $prepare->execute();
+            var_dump($prepare->rowCount());
+            if ($prepare->rowCount()>0) {
+                $resultado = $prepare->fetch();
+            }
         }
 
         $this->idConta = $resultado['idConta'];
@@ -45,10 +58,7 @@ class Conta{
 
     
    
-    public function pagamento(Type $var = null)
-    {
-        # code...
-    }
+   
     
 
     public function extrato(Type $var = null)

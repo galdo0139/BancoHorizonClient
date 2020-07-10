@@ -32,17 +32,51 @@ class Extrato{
        
         
     }
-    public function transferencia($valor, $desc){
+
+    public function deposito($valor, $desc){
         $this->valor = $valor;
-        $this->operacao = 2;
+        $this->operacao = 1;
         $this->descricao = $desc;
+        $this->categoria = "Depósito";
+
+
+        $this->registrar();
+    }
+
+
+    public function transferencia($transf){
+        $contaTransf = new Conta(0, $transf->getNumContaTransf(), $transf->getAgTransf());
+        var_dump($contaTransf);
+
+        
+        $this->valor = $transf->getValorTransf();
+        $this->operacao = 2;
+        $this->descricao = "TED no valor de ". Money::real($this->valor). " para  ". $transf->getAgTransf(). " | " .$transf->getNumContaTransf();
         $this->categoria = "Transferência";
 
 
+        $this->registrar();
+    }
+
+    
+
+    
+    public function pagamento($valor, $desc){
+        $this->valor = $valor;
+        $this->operacao = 3;
+        $this->descricao = $desc;
+        $this->categoria = "Pagamento";
+
+
+        $this->registrar();
+    }
+    
+
+    public function registrar(Type $var = null){
         $conn = DbConn::getConn();
 
         $query = "INSERT INTO extrato (idConta, valor, operacao, descricao, categoria, dataOperacao) 
-                  VALUES (:conta, :valor, :operacao, :descricao, :categoria, :dataOperacao)";
+                    VALUES (:conta, :valor, :operacao, :descricao, :categoria, :dataOperacao)";
         $prepare = $conn->prepare($query);
         $prepare->bindValue(":conta", $this->conta);
         $prepare->bindValue(":valor", $this->valor);
@@ -51,5 +85,8 @@ class Extrato{
         $prepare->bindValue(":categoria", $this->categoria);
         $prepare->bindValue(":dataOperacao", $this->dataOperacao);
         $r = $prepare->execute();
+        
     }
+
+    
 }

@@ -3,7 +3,7 @@
     <p class="saldo">{{saldo|format_currency('BRL')}}</p>
     <form method="POST">
         <label for="valor" class="valor">Valor:</label>
-        <label class="cifrao">R$</label><input type="text" pattern="^\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$" name="valor" class="valor" id="valor">
+        <label class="cifrao">R$</label><input type="text" name="valor" class="valor" id="valor">
 
         <label for="tipoConta">Agencia:</label>
         <input type="text" name="agencia" id="tipoConta">

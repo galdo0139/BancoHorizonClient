@@ -22,23 +22,26 @@ btnConfirma.onclick = function (event) {
     ajax.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var resultado = JSON.parse(this.responseText);
+            //console.log(this.responseText);
+            if (resultado.resultado) {
+                vencimento.value = resultado.dataVencimento;
+                valor.value = resultado.valorMoeda;
+                juros.value = resultado.multaAtraso;
+                desconto.value = resultado.valorDescontoMoeda;
+                total.value = resultado.totalMoeda;
+                btnConfirma.style.display = "none";
+                campos.style.display = "block";
+            } else {
+                alert('boleto não encontrado')
+            }
+
             
-            vencimento.value = resultado.dataVencimento;
-            alert(resultado.dataVencimento)
-
-            valor.value = resultado.valor;
-            juros.value = resultado.multaAtraso;
-            desconto.value = resultado.valorDesconto;
-            total.value = resultado.total;
-            btnConfirma.style.display = "none";
-
-            //pagarEm.focus();
         }
     }
     ajax.open("GET", `?numBoleto=${numBoleto}`, true);
     ajax.send();
     
     
-    campos.style.display = "block";
+    
     
 }
