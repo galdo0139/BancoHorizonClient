@@ -1,0 +1,13 @@
+<div class="wrapper">
+    <h1 class="titulo">Gerar Boleto</h1>
+    <form method="POST">
+        <label for="valorBoleto" class="valor">Valor:</label>
+        <label class="cifrao">R$</label><input type="text" name="valorBoleto" class="valor" id="valor">
+
+        <label for="dataVencimento">Data de Vencimento:</label>
+        <input type="date" name="dataVencimento" id="dataVencimento" min="{{dataAtual}}" value="{{dataAtual}}">
+
+
+        <input type="submit" value="Gerar Boleto">
+    </form>
+</div>

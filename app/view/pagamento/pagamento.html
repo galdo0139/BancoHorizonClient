@@ -1,0 +1,35 @@
+<div class="wrapper">
+    <h1 class="titulo">Pagamentos</h1>
+    <p>{{saldo|format_currency('BRL')}}</p>
+    <form method="POST">
+        <label>Código de Barras</label>
+        <input type="tel" name="codigo" id="codigo">
+        <button class="confirma">Próximo</button>
+
+        <div class="campos">
+            <label for="valorBoleto">Valor:</label>
+            <input type="text" name="valor" class="leitura" id="valor" readonly>
+
+            <label for="dataPagamento">Pagar em:</label>
+            <input type="date" name="dataPagamento" id="dataPagamento" min={{dataAtual}}>
+
+            <label for="vencimento">Data de Vencimento:</label>
+            <input type="date" name="vencimento" readonly class="leitura" id="vencimento">
+
+            <label for="juros">Juros:</label>
+            <input type="text" name="juros" class="leitura" id="juros" readonly>
+
+            <label for="desconto">Desconto:</label>
+            <input type="text" name="desconto" class="leitura" id="desconto" readonly>
+
+            <label for="beneficiado">Beneficiado:</label>
+            <input type="text" name="beneficiado" class="leitura" id="beneficiado" value ="Otario" readonly>
+
+            <label for="valorTotal" class="valor">Valor a Pagar:</label>
+            <label class="cifrao leitura">R$</label><input type="text" name="valorTotal" class="valor leitura" id="valorTotal" readonly>
+            <input type="submit" value="Próximo">
+        </div>
+        <!--  -->
+    </form>
+</div>
+<script src="/bancoHorizonClient/public/js/pagamento.js"></script>

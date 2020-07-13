@@ -1,1 +1,11 @@
-extrato
+<div class="wrapper">
+    <h1 class="titulo">Extrato</h1>
+    <div class="content">
+    {% for i in queryResult %}
+        <div class="extratoItem">
+            <h1>{{i.categoria}}</h1>
+            <p> • {{i.descricao}} </p>
+        </div>
+    {% endfor %}
+    </div>
+</div>

@@ -4,7 +4,7 @@
 abstract class dbConn{
 	/*dados do banco que desejamos nos conectar*/
 	private static $server = "localhost";
-	private static $banco = "gigaBank";
+	private static $banco = "bancoHorizon";
 	private static $user = "root";
 	private static $senha = "";
 

@@ -1,9 +1,9 @@
 <div class="wrapper">
     <h1 class="titulo">Transferência</h1>
-    <p>{{saldo|format_currency('BRL')}}</p>
+    <p class="saldo">{{saldo|format_currency('BRL')}}</p>
     <form method="POST">
         <label for="valor" class="valor">Valor:</label>
-        <input type="text" name="valor" class="valor" id="valor">
+        <label class="cifrao">R$</label><input type="text" name="valor" class="valor" id="valor">
 
         <label for="tipoConta">Agencia:</label>
         <input type="text" name="agencia" id="tipoConta">

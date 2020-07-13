@@ -14,16 +14,29 @@ class Conta{
     private $agConta;
     private $saldo;
 
+    
+    
+    
+    
     //carrega os dados da conta do usuário
-    public function __construct(){
-        
+    public function __construct($conta, $numConta = 0, $agConta = 0){
         $conn = DbConn::getConn();
         $query = "SELECT * FROM conta where idConta =:conta";
         $prepare = $conn->prepare($query);
-        $prepare->bindValue(":conta", $_SESSION['userId']);
+        $prepare->bindValue(":conta", $conta);
         $prepare->execute();
-        if ($prepare->rowCount()) {
+        if ($prepare->rowCount()>0) {
             $resultado = $prepare->fetch();
+        }else {
+            $conn = DbConn::getConn();
+            $query = "SELECT * FROM conta where numConta = :numConta AND agConta = :agConta";
+            $prepare = $conn->prepare($query);
+            $prepare->bindValue(":numConta", $numConta);
+            $prepare->bindValue(":agConta", $agConta);
+            $prepare->execute();
+            if ($prepare->rowCount()>0) {
+                $resultado = $prepare->fetch();
+            }
         }
 
         $this->idConta = $resultado['idConta'];
@@ -39,61 +52,19 @@ class Conta{
         $this->saldo = $resultado['saldo'];
     }
 
-    public function transferir($dados, $conta){
-        //filtra os dados recebidos do formulário
-        $valor = str_replace(',','.',$dados['valor']);
-        $valor = filter_var($valor, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
-        $agencia = filter_var($dados['agencia'], FILTER_SANITIZE_NUMBER_INT);
-        $numConta = filter_var($dados['conta'], FILTER_SANITIZE_NUMBER_INT);
-        $tipoConta = filter_var($dados['tipoConta'], FILTER_SANITIZE_NUMBER_INT);
-
-        //arrumar isso
-        $banco = filter_var($dados['banco'], FILTER_SANITIZE_NUMBER_INT);
-        
-        //DEBUG, TIRAR DEPOIS
-        echo("valor " . $valor . "<br><br>");
-        echo("agencia " . $agencia . "<br><br>");
-        echo("num conta " . $numConta . "<br><br>");
-        echo("banco " . $banco . "<br><br>");
-        echo("tipo conta " . $tipoConta . "<br><br>");
-        
-        
-        $conn = DbConn::getConn();
-        
-        //adiciona o saldo a uma conta existente
-        $query = "UPDATE conta SET saldo = saldo + :novoSaldo WHERE tipo =:tipo && numConta = :numConta && agConta = :agConta";
-        $prepare = $conn->prepare($query);
-        
-        $prepare->bindValue(":novoSaldo", $valor);
-        $prepare->bindValue(":tipo", $tipoConta);
-        $prepare->bindValue(":numConta", $numConta);
-        $prepare->bindValue(":agConta", $agencia);
-        $prepare->execute();
     
-        //em caso de sucesso na transferência, retira o saldo da conta que realizou a operação
-        if ($prepare->rowCount() > 0) {
-            $query = "UPDATE conta SET saldo = saldo - :novoSaldo WHERE tipo =:tipo && numConta = :numConta && agConta = :agConta";
-            $prepare = $conn->prepare($query);
-            
-            $prepare->bindValue(":novoSaldo", $valor);
-            $prepare->bindValue(":tipo", $conta->getTipo());
-            $prepare->bindValue(":numConta", $conta->getNumConta());
-            $prepare->bindValue(":agConta", $conta->getAgConta());
-            $prepare->execute();
-        }
-    }
    
-    public function pagamento(Type $var = null)
-    {
-        # code...
-    }
+    public function consultarNome(){
+        $conn = DbConn::getConn();
+        $query = "SELECT cliente.nome from cliente where idCliente = :idCliente";
+        $prepare = $conn->prepare($query);
+        $prepare->bindValue(":idCliente", $this->idCliente);
+        $r = $prepare->execute();
 
-    public function gerarBoleto(Type $var = null)
-    {
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->WriteHTML('<h1>Hello world!</h1>');
-        $mpdf->Output();
+        $row = $prepare->fetch();
+        return $row;
     }
+    
 
     public function extrato(Type $var = null)
     {
@@ -141,9 +112,16 @@ class Conta{
     public function getSaldo(){
         return $this->saldo;
     }
+    
+
+
+    
 
 
 
+    
+    
+    
     public function setIdConta($value){
         $this->idConta = $value;
     }
@@ -177,5 +155,7 @@ class Conta{
     public function setSaldo($value){
         $this->saldo = $value;
     }
+    
+
 
 }

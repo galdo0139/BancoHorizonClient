@@ -1,8 +1,6 @@
 <?php 
 
 class Usuario{
-    //private $autenticacao;
-    //private $db;
 
     private $conta;
     private $agencia;

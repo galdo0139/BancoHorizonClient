@@ -14,8 +14,13 @@ require_once 'vendor/autoload.php';
 //======================== Ver como colocar esses requires na autoloader ==========================================
 //require das models do projeto
 require_once 'lib/DbConn.php';
+require_once 'lib/Money.php';
+require_once 'lib/TwigConfig.php';
 require_once 'app/model/Usuario.php';
 require_once 'app/model/Conta.php';
+require_once 'app/model/Transferencia.php';
+require_once 'app/model/Extrato.php';
+require_once 'app/model/Boleto.php';
 
 
 //require de todas as controllers do projeto
