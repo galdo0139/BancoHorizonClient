@@ -33,11 +33,7 @@ class Conta{
             $prepare = $conn->prepare($query);
             $prepare->bindValue(":numConta", $numConta);
             $prepare->bindValue(":agConta", $agConta);
-            
-            var_dump($numConta);
-            var_dump($agConta);
             $prepare->execute();
-            var_dump($prepare->rowCount());
             if ($prepare->rowCount()>0) {
                 $resultado = $prepare->fetch();
             }
@@ -58,7 +54,16 @@ class Conta{
 
     
    
-   
+    public function consultarNome(){
+        $conn = DbConn::getConn();
+        $query = "SELECT cliente.nome from cliente where idCliente = :idCliente";
+        $prepare = $conn->prepare($query);
+        $prepare->bindValue(":idCliente", $this->idCliente);
+        $r = $prepare->execute();
+
+        $row = $prepare->fetch();
+        return $row;
+    }
     
 
     public function extrato(Type $var = null)

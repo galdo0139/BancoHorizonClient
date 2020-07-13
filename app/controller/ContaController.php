@@ -59,17 +59,16 @@ class ContaController{
                 $boleto->procuraBoleto($_POST['codigo']);
                 $boleto->calcularBoleto();
                 var_dump($boleto);
-                $boleto->pagarBoleto($conta);
-                
+                $resultado = $boleto->pagarBoleto($conta);
                 
 
+                if ($resultado) {
+                    $extrato = new Extrato();
 
-                $conteudo = $twig->render('pagamento/sucesso.html', ['saldo'=>$conta->getSaldo(),
+                    $extrato->pagamento();
+                    //carrega o conteúdo da view e modfica as variáves
+                    $conteudo = $twig->render('pagamento/sucesso.html', ['saldo'=>$conta->getSaldo(),
                     "dataAtual"=> date("Y-m-d")]);
-
-                if (isset($_POST)) {
-                   //carrega o conteúdo da view e modfica as variáves
-                    
                 } else {
                     header("location: erro");
                 }
