@@ -9,8 +9,9 @@ class Transferencia{
         
     public function transferir($dados, $conta){
         //filtra os dados recebidos do formulário
-        $this->valorTransf = str_replace(',','.',$dados['valor']);
-        $this->valorTransf =  abs(filter_var($this->valorTransf, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION));
+        $this->valorTransf = Money::valor($dados['valor']);
+        //
+        $this->valorTransf = filter_var($this->valorTransf, FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
         $this->agTransf = filter_var($dados['agencia'], FILTER_SANITIZE_NUMBER_INT);
         $this->numContaTransf = filter_var($dados['conta'], FILTER_SANITIZE_NUMBER_INT);
         $this->tipoContaTransf = filter_var($dados['tipoConta'], FILTER_SANITIZE_NUMBER_INT);

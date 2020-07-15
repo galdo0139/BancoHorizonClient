@@ -6,6 +6,7 @@ let vencimento = document.querySelector("#vencimento");
 let valor = document.querySelector("#valor");
 let juros = document.querySelector("#juros");
 let desconto = document.querySelector("#desconto");
+let beneficiado = document.querySelector("#beneficiado");
 let total = document.querySelector("#valorTotal");
 let pagarEm = document.querySelector("#dataPagamento");
 
@@ -28,6 +29,7 @@ btnConfirma.onclick = function (event) {
                 valor.value = resultado.valorMoeda;
                 juros.value = resultado.multaAtraso;
                 desconto.value = resultado.valorDescontoMoeda;
+                beneficiado.value = resultado.nomeBeneficiado;
                 total.value = resultado.totalMoeda;
                 btnConfirma.style.display = "none";
                 campos.style.display = "block";

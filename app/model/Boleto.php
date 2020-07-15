@@ -5,6 +5,7 @@ class Boleto{
     private $numBoleto;
     private $idBoleto;
     private $idConta;
+    private $nomeBeneficiado;
     private $dataEmissao;
     private $vencimento;
     private $dataVencimento;
@@ -23,10 +24,14 @@ class Boleto{
     
     private $total;
     private $totalMoeda;
+
+	
+
     private $valorPagamento;
     private $statusPagamento;
     private $resultado;
-    
+
+	  
 
     // =========================================== Cadastra um novo boleto ============================================
     public function gerarBoleto($valor, $vencimento){   
@@ -109,6 +114,7 @@ class Boleto{
 
             $this->idBoleto = $resposta['idBoleto'];
             $this->idConta = $resposta['idConta'];
+            $this->nomeBeneficiado = $resposta['nomeBeneficiado'];
             $this->dataEmissao = $resposta['dataEmissao'];
             $this->vencimento = new DateTime($resposta['dataVencimento']);
             $this->dataVencimento = $resposta['dataVencimento'];
@@ -172,8 +178,7 @@ class Boleto{
     public function pagarBoleto($conta){
        
         $contaBeneficiario = new Conta($this->getIdConta());
-        //$contaBeneficiario = new Conta($boleto->getIdConta());
-        var_dump($contaBeneficiario);
+        //var_dump($contaBeneficiario);
         $conn = DbConn::getConn();
         
         
@@ -188,9 +193,11 @@ class Boleto{
         $prepare->bindValue(":numConta", $contaBeneficiario->getNumConta());
         $prepare->bindValue(":agConta", $contaBeneficiario->getAgConta());
         $prepare->execute();
+        
 
         //em caso de sucesso na transferência, retira o saldo da conta que realizou a operação
         if ($prepare->rowCount() > 0) {
+            echo '<h1>'. $this->getTotalMoeda() . 'AQUI</h1>';
             $query = "UPDATE conta 
             SET saldo = saldo - :novoSaldo 
             WHERE tipo =:tipo && numConta = :numConta 
@@ -220,56 +227,134 @@ class Boleto{
 
     
 
-    
-	public function getIdConta() {
-		return $this->idConta;
-	}
-
-	public function setIdConta($idConta) {
-		$this->idConta = $idConta;
-    }
-    
-
-    public function getValor(){
-        return $this->valor;
-    }
-
     public function getDataAtual(){
         return $this->dataAtual;
     }
-
-    public function getVencimento(){
-        return $this->vencimento;
-    }
-
     public function getNumBoleto(){
         return $this->numBoleto;
     }
-
+    public function getIdBoleto(){
+        return $this->idBoleto;
+    }
+    public function getIdConta(){
+        return $this->idConta;
+    }
+    public function getNomeBeneficiado(){
+        return $this->nomeBeneficiado;
+    }
+    public function getDataEmissao(){
+        return $this->dataEmissao;
+    }
+    public function getVencimento(){
+        return $this->vencimento;
+    }
+    public function getDataVencimento(){
+        return $this->dataVencimento;
+    }
+    public function getDiasAtraso(){
+        return $this->diasAtraso;
+    }
+    public function getCobrarJuros(){
+        return $this->cobrarJuros;
+    }
+    public function getDataDesconto(){
+        return $this->dataDesconto;
+    }
+    public function getMultaAtraso(){
+        return $this->multaAtraso;
+    }
+    public function getValorDesconto(){
+        return $this->valorDesconto;
+    }
+    public function getValorDescontoMoeda(){
+        return $this->valorDescontoMoeda;
+    }
+    public function getValor(){
+        return $this->valor;
+    }
+    public function getValorMoeda(){
+        return $this->valorMoeda;
+    }
+    public function getTotal(){
+        return $this->total;
+    }
+    public function getTotalMoeda(){
+        return $this->totalMoeda;
+    }
+    public function getValorPagamento(){
+        return $this->valorPagamento;
+    }
+    public function getStatusPagamento(){
+        return $this->statusPagamento;
+    }
     public function getResultado(){
         return $this->resultado;
     }
 
 
-    public function setValor($value){
-        $this->valor = $value;
-    }
+
 
     public function setDataAtual($value){
         $this->dataAtual = $value;
     }
-
-    public function setVencimento($value){
-        $this->vencimento = $value;
-    }
-
     public function setNumBoleto($value){
         $this->numBoleto = $value;
     }
-
+    public function setIdBoleto($value){
+        $this->idBoleto = $value;
+    }
+    public function setIdConta($value){
+        $this->idConta = $value;
+    }
+    public function setNomeBeneficiado($value){
+        $this->nomeBeneficiado = $value;
+    }
+    public function setDataEmissao($value){
+        $this->dataEmissao = $value;
+    }
+    public function setVencimento($value){
+        $this->vencimento = $value;
+    }
+    public function setDataVencimento($value){
+        $this->dataVencimento = $value;
+    }
+    public function setDiasAtraso($value){
+        $this->diasAtraso = $value;
+    }
+    public function setCobrarJuros($value){
+        $this->cobrarJuros = $value;
+    }
+    public function setDataDesconto($value){
+        $this->dataDesconto = $value;
+    }
+    public function setMultaAtraso($value){
+        $this->multaAtraso = $value;
+    }
+    public function setValorDesconto($value){
+        $this->valorDesconto = $value;
+    }
+    public function setValorDescontoMoeda($value){
+        $this->valorDescontoMoeda = $value;
+    }
+    public function setValor($value){
+        $this->valor = $value;
+    }
+    public function setValorMoeda($value){
+        $this->valorMoeda = $value;
+    }
+    public function setTotal($value){
+        $this->total = $value;
+    }
+    public function setTotalMoeda($value){
+        $this->totalMoeda = $value;
+    }
+    public function setValorPagamento($value){
+        $this->valorPagamento = $value;
+    }
+    public function setStatusPagamento($value){
+        $this->statusPagamento = $value;
+    }
     public function setResultado($value){
         $this->resultado = $value;
     }
-
-    
 }

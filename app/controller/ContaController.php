@@ -65,14 +65,14 @@ class ContaController{
                 if ($resultado) {
                     $extrato = new Extrato();
 
-                    $extrato->pagamento();
+                    $extrato->pagamento($boleto, $conta);
                     //carrega o conteúdo da view e modfica as variáves
-                    $conteudo = $twig->render('pagamento/sucesso.html', ['saldo'=>$conta->getSaldo(),
+                    $conteudo = $twig->render('pagamento/sucesso.html', ['boletoVal'=>$boleto->getTotal(),
                     "dataAtual"=> date("Y-m-d")]);
                 } else {
                     header("location: erro");
                 }
-            } else {
+            }else{
                 //falaha no pagamento do boleto
                 $conteudo = $twig->render('pagamento/pagamento.html', ['saldo'=>$conta->getSaldo(),
                                                                         "dataAtual"=> date("Y-m-d")]);
@@ -109,7 +109,7 @@ class ContaController{
                 //registro no extrato
                 $extrato = new Extrato();
 
-                $extrato->transferencia($transf);
+                $extrato->transferencia($transf, $conta);
                 
                 //renderiza a view de sucesso na transferencia
                 $conteudo = $twig->render('transferencia/sucesso.html', ['transf'=> $transf->getValorTransf(), 'saldo'=>$conta->getSaldo()]);
